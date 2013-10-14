@@ -22,7 +22,7 @@ type Board struct {
 	title string
 }
 
-// Generate creates a Board to represent the given data by applying the dunken
+// Generate creates a Board to represent the given data by applying the drunken
 // bishop algorithm.
 func Generate(data []byte, title string) Board {
 	board := Board{title: title}
@@ -74,10 +74,9 @@ func Generate(data []byte, title string) Board {
 // character set.
 func (board Board) String() string {
 	var chars = []string{
-		" ", ".", "o", "+",
-		"=", "*", "B", "O",
-		"X", "@", "%", "&",
-		"#", "/", "^",
+		" ", ".", "o", "+", "=",
+		"*", "B", "O", "X", "@",
+		"%", "&", "#", "/", "^",
 	}
 	var buf bytes.Buffer
 
