@@ -18,14 +18,15 @@ const (
 
 // Board is a generated randomart board.
 type Board struct {
-	tiles [YDim][XDim]int8
-	title string
+	tiles    [YDim][XDim]int8
+	title    string
+	subtitle string
 }
 
 // Generate creates a Board to represent the given data by applying the drunken
 // bishop algorithm.
-func Generate(data []byte, title string) Board {
-	board := Board{title: title}
+func Generate(data []byte, title, subtitle string) Board {
+	board := Board{title: title, subtitle: subtitle}
 	var x, y int
 	x = XDim / 2
 	y = YDim / 2
@@ -80,15 +81,11 @@ func (board Board) String() string {
 	}
 	var buf bytes.Buffer
 
-	if len(board.title) > 8 {
-		board.title = board.title[:8]
+	if len(board.title) > 15 {
+		board.title = board.title[:15]
 	}
 
-	buf.WriteString("+--[ " + board.title + " ]--")
-	for i := 0; i < XDim-8-len(board.title); i++ {
-		buf.WriteString("-")
-	}
-	buf.WriteString("+\n")
+	writeTitle(&buf, board.title)
 
 	for _, row := range board.tiles {
 		buf.WriteString("|")
@@ -108,11 +105,32 @@ func (board Board) String() string {
 		buf.WriteString("|\n")
 	}
 
+	writeTitle(&buf, board.subtitle)
+
+	return buf.String()
+}
+
+func writeTitle(buf *bytes.Buffer, title string) {
+	if title != "" {
+		extraChars := len(title) + 2 - XDim
+		if extraChars > 0 {
+			title = title[:XDim-extraChars]
+		}
+		title = "[" + title + "]"
+	}
+
+	leftLen := (XDim - len(title)) / 2
+	rightLen := XDim - len(title) - leftLen
+
 	buf.WriteString("+")
-	for i := 0; i < XDim; i++ {
+	for i := 0; i < leftLen; i++ {
+		buf.WriteString("-")
+	}
+
+	buf.WriteString(title)
+
+	for i := 0; i < rightLen; i++ {
 		buf.WriteString("-")
 	}
 	buf.WriteString("+\n")
-
-	return buf.String()
 }
