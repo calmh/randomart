@@ -25,7 +25,11 @@ type Board struct {
 
 // Generate creates a Board to represent the given data by applying the drunken
 // bishop algorithm.
-func Generate(data []byte, title, subtitle string) Board {
+func Generate(data []byte, title string) Board {
+	return GenerateSubtitled(data, title, "")
+}
+
+func GenerateSubtitled(data []byte, title, subtitle string) Board {
 	board := Board{title: title, subtitle: subtitle}
 	var x, y int
 	x = XDim / 2

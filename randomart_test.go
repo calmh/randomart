@@ -118,7 +118,7 @@ func TestRandomart(t *testing.T) {
 }
 
 func verify(t *testing.T, title string, subtitle string, data []byte, clines []string) {
-	generated := strings.TrimSpace(Generate(data, title, subtitle).String())
+	generated := strings.TrimSpace(GenerateSubtitled(data, title, subtitle).String())
 	glines := strings.Split(generated, "\n")
 
 	if cl, gl := len(clines), len(glines); cl != gl {
